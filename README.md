@@ -1,1 +1,1 @@
-# wesbos
+# wesbos JS challenge
