@@ -1,0 +1,38 @@
+body {
+  color: white;
+  font-family: 'helvetica neue', sans-serif;
+  font-weight: 100;
+  font-size: 50px;
+  text-align: center;
+  background: #193549;
+}
+
+.controls {
+  margin-bottom: 50px;
+}
+
+input {
+  width: 100px;
+}
+
+/* css variables can be updated from JS */
+/* with SASS we define variables at compile time and we can not change it after that */
+
+/* declare css variable on element and set default value */
+  :root {
+    --base: #ffc600;
+    --blur: 10px;
+    --spacing: 10px;
+  }
+
+/* after we define variables we can use them */
+  img {
+    padding: var(--spacing);
+    background: var(--base);
+    filter: blur(var(--blur));
+  }
+
+  /* anything hightlighted will have class hl */
+  .hl {
+    color: var(--base);
+  }
