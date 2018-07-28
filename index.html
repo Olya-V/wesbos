@@ -13,10 +13,38 @@
       <div class="hand second-hand"></div>
     </div>
   </div>
+
   <script>
+    const hoursHand = document.querySelector('.hour-hand');
+    const minuteHand = document.querySelector('.min-hand');
+    const secondHand = document.querySelector('.second-hand');
+
+    function setDate() {
+      const now = new Date();
+
+      const seconds = now.getSeconds(); //gets the seconds of current minutes
+      const secondsDegrees = ((seconds / 60) * 360) + 90; //add 90 deg to offset from 12, by default hand goes from left to right, and we rotated it by 90deg in css
+      secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+      const minutes = now.getMinutes();
+      const minutesDegrees = (minutes / 60) * 360 + (seconds * 0.1) + 90;
+      minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+
+
+      const hours = now.getHours();
+      const hoursDegrees = (hours / 12) * 360 + (minutes * 0.5) + 90;
+      hoursHand.style.transform = `rotate(${hoursDegrees}deg)`;
+
+      if(secondsDegrees == 90 || minutesDegrees == 90 || hoursDegrees == 90) {
+        console.log(`zero`);
+
+
+      }
+    }
+
+    //run function every second
+    setInterval(setDate, 1000)
 
   </script>
-
-
   </body>
 </html>

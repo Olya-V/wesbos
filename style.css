@@ -43,4 +43,17 @@ body {
   width: 50%;
   height: 6px;
   background: black;
+  transform-origin: 100%; /* by deafult it is 50% - element rotate point in the middle^
+                              but we need right end in the center of clock*/
+  transform: rotate(90deg); /* div goes from the left to right, so we need clock to start at 12 */
+}
+
+.min-hand {
+  background: darkred;
+  height: 4px;
+}
+
+.second-hand {
+  background: darkgreen;
+  height: 2px;
 }
