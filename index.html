@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>type Ahead</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <form action="" class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+    <ul class="suggestions">
+      <li>Filter for a city</li>
+      <li>or a state</li>
+    </ul>
+  </form>
+  <script>
+    //find a file with all cities and put it in a separate file
+    const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+
+    //fetch that data - it is huge array
+    //after data is back, when typing - filter array with subset that will match
+
+
+    const cities = [];
+
+    //fetch will return a promise, not a data
+    //to recieve data call .then
+    //const prom = fetch(endpoint);
+    //console.log(prom);
+
+    //data is coming back from our fetch - it does not know what kind of data it is
+    //fetch(endpoint).then(blob => console.log(blob));
+    // but we know it is JSON, in console in proto we see method called json
+    //we need to convert data to JSON
+    //blob.json() will return another promise
+    //after another .then we will recieve a raw data
+
+
+    fetch(endpoint)
+      .then(blob => blob.json())
+      .then(data => cities.push(...data));
+
+
+    //when typing a name - run a func that will take a massive array of data
+    // and filter it down to a subset 
+    
+    function findMatches(wordToMatch, cities) {
+      return cities.filter(place => {
+          //figure out if city/state matches input
+
+          //return place.city.match(/york/i); could use this but the word is a variable
+          //but we can't put variable is regexp here - place.city.match(/wordToMatch/i)
+          // it will look for wordToMatch
+
+          //we need to put a variable in regexp - create regexp outside
+
+          const regexp = new RegExp(wordToMatch, 'gi'); //flag g - global, i - case insensitive
+          return place.city.match(regexp) || place.state.match(regexp);
+        }
+      )
+    }
+
+    function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+    
+    //when input value changes - display variants
+    
+    function displayMatches() {
+      //console.log(this.value); //this - input
+
+      const matchArray = findMatches(this.value, cities);
+
+      //console.log(matchArray);
+
+
+      //map method will return an array of li - to recieve string - join
+      const html = matchArray.map(place => {
+        //find the word that matches regexp and create span to hl it
+
+        const regexp = new RegExp(this.value, 'gi');
+
+        //use hl-ed cityname instead place.city and statename instead of place.state
+        const cityName = place.city.replace(regexp, `<span class="hl">${this.value}</span>`);
+        const stateName = place.state.replace(regexp, `<span class="hl">${this.value}</span>`);
+
+        return `
+          <li>
+            <span class="name">${cityName}, ${stateName}</span>
+            <span class="population">${numberWithCommas(place.population)}</span>
+          </li>
+        `;
+      }).join('');
+
+      suggestions.innerHTML = html;
+    }
+
+    const searchInput = document.querySelector('.search');
+    const suggestions = document.querySelector('.suggestions');
+
+
+    //change event fires when we go off that input - click smwhere else
+    searchInput.addEventListener('change', displayMatches);
+    searchInput.addEventListener('keyup', displayMatches);
+
+  </script>
+</body>
+</html>
