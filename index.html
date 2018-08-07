@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+<body>
+  <canvas id="draw" width="800" height="800"></canvas>
+  <script>
+
+    const canvas = document.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+
+    //resize canvas to window
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    ctx.strokeStyle = '#BADA55';
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
+    ctx.lineWidth = 100;
+    //ctx.globalCompositeOperation = 'multiply'; //colors will blend when on top of each other
+
+    let isDrawing = false; //flag to show are we drawing on canvas or just moving mouse and mouse is clicked down
+    let lastY = 0;
+    let lastX = 0;
+    let hue = 0;
+    let direction = true; //building up
+
+    //func draw will be called when we move mouse on canvas
+
+    function draw(evt) {
+      if(!isDrawing) return; //stop if mouse is not clicked down
+      console.log(evt);
+
+      ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+      ctx.beginPath();
+      //start from
+      ctx.moveTo(lastX, lastY);
+      //move to
+      ctx.lineTo(evt.offsetX, evt.offsetY);
+      ctx.stroke();
+
+      //if not update coords - will start from 0,0
+      //lastX = evt.offsetX;
+      //lastY = evt.offsetY;
+
+      [lastX, lastY] = [evt.offsetX, evt.offsetY];
+      hue++;
+
+      if (hue > 360) {
+        hue = 0;
+      }
+
+
+      //flip the direction: up or down
+      if(ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+        direction = !direction;
+      }
+
+      direction ? ctx.lineWidth++ : ctx.lineWidth--;
+    }
+
+    canvas.addEventListener('mousedown', (evt) => {
+      isDrawing = true;
+      [lastX, lastY] = [evt.offsetX, evt.offsetY]; //mousedown will happen before mouse move, set correct coords where clicked down, not 0,0
+    });
+
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', () => isDrawing = false);
+    canvas.addEventListener('mouseout', () => isDrawing = false);
+
+
+  </script>
+</body>
+</html>
