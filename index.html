@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hold Shift to Check Multiple Checkboxes</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+  <body>
+  <form class="inbox" method="get" action="https://echo.ru">
+    <div class="item">
+      <input type="checkbox" name="one" id="one">
+      <label for="one">This is an inbox layout.</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" name="two" id="two">
+      <label for="two">Check one item</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" name="three" id="three">
+      <label for="three">Hold down your Shift key</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" name="four" id="four">
+      <label for="four">Check a lower item</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" name="five" id="five">
+      <label for="five">Everything inbetween should also be set to checked</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" name="six" id="six">
+      <label for="six">Try do it without any libraries</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" name="seven" id="seven">
+      <label for="seven">Just regular JavaScript</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" name="eight" id="eight">
+      <label for="eight">Good Luck!</label>
+    </div>
+    <div class="item">
+      <input type="checkbox" name="nine" id="nine">
+      <label for="nine">Don't forget to tweet your result!</label>
+    </div>
+  </form>
+  <script>
+
+    const checkboxes = document.querySelectorAll('.inbox input[type="checkbox"]');
+    let lastChecked;
+
+    function handleCheck(evt) {
+      //check if shift key down
+      let inBetween = false;
+
+      if(evt.shiftKey && this.checked) {
+      //loop over every checkbox and create a var inBetween
+      //inBetween = true/false
+      //inBetween = true when we are beetwen first checked and last checked with shift key down
+
+        checkboxes.forEach(checkbox => {
+          if(checkbox === this || checkbox === lastChecked) {
+            inBetween = !inBetween;
+          }
+
+          if(inBetween) {
+            checkbox.checked = true;
+          }
+        })
+      }
+
+
+      lastChecked = this;
+    }
+
+    checkboxes.forEach(checkbox => checkbox.addEventListener('click', handleCheck)); //click event will fire even with keybord
+
+
+  </script>
+</body>
+</html>
