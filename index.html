@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>👀👀👀Follow Along Navigation</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <nav>
+    <ul class="menu">
+      <li><a href="">Home</a></li>
+      <li><a href="">Order Status</a></li>
+      <li><a href="">Tweets</a></li>
+      <li><a href="">Read Our History</a></li>
+      <li><a href="">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <div class="wrapper">
+    <p>Lorem ipsum dolor sit amet,
+      <a href="">consectetur</a>
+      adipisicing elit. Est
+      <a href="">explicabo</a>
+      unde natus necessitatibus esse obcaecati distinctio, aut itaque, qui vitae!
+    </p>
+    <p>Aspernatur sapiente quae sint
+      <a href="">soluta</a>
+      modi, atque praesentium laborum pariatur earum
+      <a href="">quaerat</a>
+      cupiditate consequuntur facilis ullam dignissimos, aperiam quam veniam.
+    </p>
+    <p>Cum ipsam quod, incidunt sit ex
+      <a href="">tempore</a>
+      placeat maxime
+      <a href="">corrupti</a>
+      possimus
+      <a href="">veritatis</a>
+      ipsum fugit recusandae est doloremque? Hic,
+      <a href="">quibusdam</a>,
+      nulla.</p>
+    <p>
+      Esse quibusdam, ad, ducimus cupiditate
+      <a href="">nulla</a>,
+      quae magni odit
+      <a href="">totam</a>
+      ut consequatur eveniet sunt quam provident sapiente dicta neque quod.
+    </p>
+    <p>Aliquam
+      <a href="">dicta</a>
+      sequi culpa fugiat
+      <a href="">consequuntur</a>
+      pariatur optio ad minima, maxime
+      <a href="">odio</a>,
+      distinctio magni impedit tempore enim repellendus
+      <a href="">repudiandae</a>
+      quas!
+    </p>
+  </div>
+
+  <script>
+    const triggers = document.querySelectorAll('a');
+
+    //when we move cursor over a trigger we add a span with the class of hightlight
+    //it will figure out the width and height and position of trigger on the page
+    //and because there is css transition - hightlight span will transtion itself from place to place
+
+
+    //create highlight element and put into the DOM
+    const highlight = document.createElement('span');
+    highlight.classList.add('highlight');
+    document.body.append(highlight);
+
+    //listen for user enters into a link
+    //listen for mouseenter event on each of mouse triggers
+
+    function highlightLink() {
+      //console.log(this);
+
+      //how big is the trigger to hightlight it
+      //and where on the page it is (x and y coords)
+      //if we scroll down - it won't work
+      //need to figure out how far user scrolled down and compensate it (add window.scrollY and window.scrollX to trigger coords)
+      const linkCoords = this.getBoundingClientRect();
+      const coords = {
+        width: linkCoords.width,
+        height: linkCoords.height,
+        top: linkCoords.top + window.scrollY,
+        left: linkCoords.left + window.scrollX
+      };
+
+      highlight.style.width = `${coords.width}px`;
+      highlight.style.height = `${coords.height}px`;
+      highlight.style.transform = `translate(${coords.left}px, ${coords.top}px)`; //for left and top we will use transform property
+    }
+
+    triggers.forEach((trigger) => trigger.addEventListener('mouseenter', highlightLink));
+  </script>
+</body>
+</html>
